@@ -2,12 +2,10 @@ package com.example.myapp2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.example.myapp2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -82,12 +80,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion() {
-        var textQuestionResId = questionBank[currentIndex].textId
+        val textQuestionResId = questionBank[currentIndex].textId
         textQuestionView.setText(textQuestionResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        var correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if(userAnswer == correctAnswer) {
             R.string.correct_toast
         } else {
