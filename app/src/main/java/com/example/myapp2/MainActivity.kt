@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.myapp2.databinding.ActivityMainBinding
@@ -14,6 +16,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
+    private lateinit var nextButton: ImageButton
+    private lateinit var prevButton: ImageButton
+    private lateinit var textQuestionView: TextView
 
     private val questionBank = listOf(
         Questions(R.string.question_australia, true),
@@ -33,24 +38,67 @@ class MainActivity : AppCompatActivity() {
         setContentView(bindingClass.root)
         trueButton = bindingClass.trueButton
         falseButton = bindingClass.falseButton
+        nextButton = bindingClass.nextButton
+        prevButton = bindingClass.prevButton
+        textQuestionView = bindingClass.questionTextView
 
         trueButton.setOnClickListener {
-            val toast = Toast.makeText(
-                this,
-                R.string.correct_toast,
-                Toast.LENGTH_SHORT
-            )
-            toast.show()
+            checkAnswer(true)
         }
 
         falseButton.setOnClickListener {
-            val toast = Toast.makeText(
-                this,
-                R.string.incorrect_toast,
-                Toast.LENGTH_SHORT
-            )
-            toast.show()
+            checkAnswer(false)
         }
 
+        nextButton.setOnClickListener {
+            updateAddQuestionAndIndex()
+        }
+
+        prevButton.setOnClickListener {
+            updateSubQuestionAndIndex()
+        }
+
+        textQuestionView.setOnClickListener {
+            updateAddQuestionAndIndex()
+        }
+
+        updateQuestion()
+
+
     }
+
+    private fun updateAddQuestionAndIndex() {
+        currentIndex = (currentIndex + 1) % questionBank.size
+        updateQuestion()
+    }
+
+    private fun updateSubQuestionAndIndex() {
+        currentIndex = if(currentIndex > 0){
+            (currentIndex - 1)
+        } else{
+            0
+        }
+        updateQuestion()
+    }
+
+    private fun updateQuestion() {
+        var textQuestionResId = questionBank[currentIndex].textId
+        textQuestionView.setText(textQuestionResId)
+    }
+
+    private fun checkAnswer(userAnswer: Boolean) {
+        var correctAnswer = questionBank[currentIndex].answer
+        val messageResId = if(userAnswer == correctAnswer) {
+            R.string.correct_toast
+        } else {
+            R.string.incorrect_toast
+        }
+        Toast.makeText(
+            this,
+            messageResId,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+
 }
