@@ -17,4 +17,5 @@
     <string name="number_4">4</string>
     <string name="number_5">5</string>
     <string name="number_6">6</string>
+    <string name="text_end_quiz">You answered correctly in</string>
 </resources>

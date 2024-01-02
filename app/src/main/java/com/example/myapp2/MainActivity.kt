@@ -1,5 +1,6 @@
 package com.example.myapp2
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     private var currentIndex = 0
 
+    private var answerCounting = 0
+    private var correctAnswerInt:Int = 0
+    private var incorrectAnswerInt:Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +49,28 @@ class MainActivity : AppCompatActivity() {
         prevButton = bindingClass.prevButton
         textQuestionView = bindingClass.questionTextView
 
+        val answerNumber = listOf(
+            bindingClass.answerNumber1,
+            bindingClass.answerNumber2,
+            bindingClass.answerNumber3,
+            bindingClass.answerNumber4,
+            bindingClass.answerNumber5,
+            bindingClass.answerNumber6
+        )
+
         trueButton.setOnClickListener {
             if(!questionBank[currentIndex].userAnswer){
+                answerNumber[currentIndex]?.setBackgroundColor(Color.GREEN)
+                answerCounting += 1
                 checkAnswer(true)
+
             }
         }
 
         falseButton.setOnClickListener {
             if(!questionBank[currentIndex].userAnswer){
+                answerNumber[currentIndex]?.setBackgroundColor(Color.RED)
+                answerCounting +=1
                 checkAnswer(false)
             }
         }
@@ -112,17 +131,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
-        questionBank[currentIndex].userAnswer = true
-        val messageResId = if(userAnswer == correctAnswer) {
-            R.string.correct_toast
+        if(userAnswer == correctAnswer) {
+            recordAnswer(true)
         } else {
-            R.string.incorrect_toast
+            recordAnswer(false)
+        }
+
+    }
+
+    private fun recordAnswer(answer: Boolean) {
+        questionBank[currentIndex].userAnswer = true
+        val messageResId: Int
+        if(answer) {
+            messageResId = R.string.correct_toast
+            correctAnswerInt += 1
+        } else {
+            messageResId = R.string.incorrect_toast
+            incorrectAnswerInt += 1
         }
         Toast.makeText(
             this,
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
+        if(answerCounting == 6) {
+            endQuiz()
+        }
+    }
+
+    private fun endQuiz() {
+        val countAnswer = (100/answerCounting) * correctAnswerInt
+        textQuestionView.text = "Result $countAnswer%"
     }
 
 
