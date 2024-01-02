@@ -2,11 +2,14 @@ package com.example.myapp2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.example.myapp2.databinding.ActivityMainBinding
+
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "fun onCreate() is called")
         bindingClass = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
         trueButton = bindingClass.trueButton
@@ -41,11 +45,15 @@ class MainActivity : AppCompatActivity() {
         textQuestionView = bindingClass.questionTextView
 
         trueButton.setOnClickListener {
-            checkAnswer(true)
+            if(!questionBank[currentIndex].userAnswer){
+                checkAnswer(true)
+            }
         }
 
         falseButton.setOnClickListener {
-            checkAnswer(false)
+            if(!questionBank[currentIndex].userAnswer){
+                checkAnswer(false)
+            }
         }
 
         nextButton.setOnClickListener {
@@ -61,8 +69,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "fun onResume() is called")
+    }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "fun onStop() is called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "fun onStop() is called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "fun onDestroy() is called")
     }
 
     private fun updateAddQuestionAndIndex() {
@@ -86,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
+        questionBank[currentIndex].userAnswer = true
         val messageResId = if(userAnswer == correctAnswer) {
             R.string.correct_toast
         } else {
