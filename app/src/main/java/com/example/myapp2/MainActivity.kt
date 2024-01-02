@@ -4,11 +4,14 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.myapp2.databinding.ActivityMainBinding
+import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 
@@ -21,6 +24,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
     private lateinit var textQuestionView: TextView
+    private lateinit var textResult: TextView
+    private lateinit var answerNumber1: TextView
+    private lateinit var answerNumber2: TextView
+    private lateinit var answerNumber3: TextView
+    private lateinit var answerNumber4: TextView
+    private lateinit var answerNumber5: TextView
+    private lateinit var answerNumber6: TextView
+
+    var answerNumber = arrayListOf<TextView>()
 
     private val questionBank = listOf(
         Questions(R.string.question_australia, true),
@@ -33,9 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     private var currentIndex = 0
 
-    private var answerCounting = 0
-    private var correctAnswerInt:Int = 0
-    private var incorrectAnswerInt:Int = 0
+    private var answerCounting:Double = 0.0
+    private var correctAnswerInt:Double = 0.0
+    private var incorrectAnswerInt:Double = 0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,19 +60,24 @@ class MainActivity : AppCompatActivity() {
         nextButton = bindingClass.nextButton
         prevButton = bindingClass.prevButton
         textQuestionView = bindingClass.questionTextView
+        textResult = bindingClass.textResult!!
+        answerNumber1 = bindingClass.answerNumber1
+        answerNumber2 = bindingClass.answerNumber2
+        answerNumber3 = bindingClass.answerNumber3
+        answerNumber4 = bindingClass.answerNumber4
+        answerNumber5 = bindingClass.answerNumber5
+        answerNumber6 = bindingClass.answerNumber6
+        textResult.visibility = View.GONE
 
-        val answerNumber = listOf(
-            bindingClass.answerNumber1,
-            bindingClass.answerNumber2,
-            bindingClass.answerNumber3,
-            bindingClass.answerNumber4,
-            bindingClass.answerNumber5,
-            bindingClass.answerNumber6
-        )
+        answerNumber.add(answerNumber1)
+        answerNumber.add(answerNumber2)
+        answerNumber.add(answerNumber3)
+        answerNumber.add(answerNumber4)
+        answerNumber.add(answerNumber5)
+        answerNumber.add(answerNumber6)
 
         trueButton.setOnClickListener {
             if(!questionBank[currentIndex].userAnswer){
-                answerNumber[currentIndex]?.setBackgroundColor(Color.GREEN)
                 answerCounting += 1
                 checkAnswer(true)
 
@@ -69,8 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         falseButton.setOnClickListener {
             if(!questionBank[currentIndex].userAnswer){
-                answerNumber[currentIndex]?.setBackgroundColor(Color.RED)
-                answerCounting +=1
+                answerCounting += 1
                 checkAnswer(false)
             }
         }
@@ -135,6 +151,7 @@ class MainActivity : AppCompatActivity() {
             recordAnswer(true)
         } else {
             recordAnswer(false)
+
         }
 
     }
@@ -145,23 +162,26 @@ class MainActivity : AppCompatActivity() {
         if(answer) {
             messageResId = R.string.correct_toast
             correctAnswerInt += 1
+            answerNumber[currentIndex].setBackgroundColor(Color.GREEN)
         } else {
             messageResId = R.string.incorrect_toast
             incorrectAnswerInt += 1
+            answerNumber[currentIndex].setBackgroundColor(Color.RED)
         }
         Toast.makeText(
             this,
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
-        if(answerCounting == 6) {
+        if(answerCounting == 6.0) {
             endQuiz()
         }
     }
 
     private fun endQuiz() {
-        val countAnswer = (100/answerCounting) * correctAnswerInt
-        textQuestionView.text = "Result $countAnswer%"
+        val countAnswer = (((100/answerCounting) * correctAnswerInt) * 100).roundToInt() / 100.0
+        textResult.visibility = View.VISIBLE
+        textResult.text = "Result $countAnswer%"
     }
 
 
