@@ -127,8 +127,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAddQuestionAndIndex() {
-        currentIndex = (currentIndex + 1) % questionBank.size
-        updateQuestion()
+        if(answerCounting != 6.0) {
+            currentIndex = (currentIndex + 1) % questionBank.size
+            updateQuestion()
+        }
     }
 
     private fun updateSubQuestionAndIndex() {
