@@ -1,5 +1,6 @@
 package com.example.myapp2
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,9 +8,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityMainBinding
 import kotlin.math.roundToInt
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var answerNumber5: TextView
     private lateinit var answerNumber6: TextView
 
-    var answerNumber = arrayListOf<TextView>()
+    private var answerNumber = arrayListOf<TextView>()
 
     private val questionBank = listOf(
         Questions(R.string.question_australia, true),
@@ -50,6 +51,11 @@ class MainActivity : AppCompatActivity() {
     private var incorrectAnswerInt:Double = 0.0
 
 
+    private val quizViewModel: QuizViewModel by lazy {
+        ViewModelProvider(this)[QuizViewModel::class.java]
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "fun onCreate() is called")
@@ -60,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         nextButton = bindingClass.nextButton
         prevButton = bindingClass.prevButton
         textQuestionView = bindingClass.questionTextView
-        textResult = bindingClass.textResult!!
+        textResult = bindingClass.textResult
         answerNumber1 = bindingClass.answerNumber1
         answerNumber2 = bindingClass.answerNumber2
         answerNumber3 = bindingClass.answerNumber3
@@ -180,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun endQuiz() {
         val countAnswer = (((100/answerCounting) * correctAnswerInt) * 100).roundToInt() / 100.0
         textResult.visibility = View.VISIBLE
