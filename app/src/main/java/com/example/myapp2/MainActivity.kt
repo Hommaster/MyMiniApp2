@@ -35,17 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     private var answerNumber = arrayListOf<TextView>()
 
-    private val questionBank = listOf(
-        Questions(R.string.question_australia, true),
-        Questions(R.string.question_ocean, true),
-        Questions(R.string.question_mideast, false),
-        Questions(R.string.question_africa, false),
-        Questions(R.string.question_americas, true),
-        Questions(R.string.question_asia, true)
-    )
-
-    private var currentIndex = 0
-
     private var answerCounting:Double = 0.0
     private var correctAnswerInt:Double = 0.0
     private var incorrectAnswerInt:Double = 0.0
@@ -83,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         answerNumber.add(answerNumber6)
 
         trueButton.setOnClickListener {
-            if(!questionBank[currentIndex].userAnswer){
+            if(!quizViewModel.checkAnswerFromUser()){
                 answerCounting += 1
                 checkAnswer(true)
 
@@ -91,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         falseButton.setOnClickListener {
-            if(!questionBank[currentIndex].userAnswer){
+            if(!quizViewModel.checkAnswerFromUser()){
                 answerCounting += 1
                 checkAnswer(false)
             }
@@ -134,27 +123,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateAddQuestionAndIndex() {
         if(answerCounting != 6.0) {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
         }
     }
 
     private fun updateSubQuestionAndIndex() {
-        currentIndex = if(currentIndex > 0){
-            (currentIndex - 1)
-        } else{
-            0
-        }
+        quizViewModel.moveToPrev()
         updateQuestion()
     }
 
     private fun updateQuestion() {
-        val textQuestionResId = questionBank[currentIndex].textId
+        val textQuestionResId = quizViewModel.currentQuestionText
         textQuestionView.setText(textQuestionResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
         if(userAnswer == correctAnswer) {
             recordAnswer(true)
         } else {
@@ -165,16 +150,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recordAnswer(answer: Boolean) {
-        questionBank[currentIndex].userAnswer = true
+        quizViewModel.changeAnswerFromUser()
         val messageResId: Int
         if(answer) {
             messageResId = R.string.correct_toast
             correctAnswerInt += 1
-            answerNumber[currentIndex].setBackgroundColor(Color.GREEN)
+            answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.GREEN)
         } else {
             messageResId = R.string.incorrect_toast
             incorrectAnswerInt += 1
-            answerNumber[currentIndex].setBackgroundColor(Color.RED)
+            answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.RED)
         }
         Toast.makeText(
             this,
