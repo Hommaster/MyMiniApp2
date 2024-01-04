@@ -1,9 +1,7 @@
 package com.example.myapp2
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 
-private const val TAG = "QuizViewModel"
 
 class QuizViewModel: ViewModel() {
 
@@ -31,7 +29,11 @@ class QuizViewModel: ViewModel() {
     }
 
     fun moveToNext() {
-        currentIndex = (currentIndex + 1) % questionBank.size
+        if(currentIndex == 5){
+            currentIndex + 0
+        } else {
+            currentIndex = (currentIndex + 1)
+        }
     }
 
     fun moveToPrev() {

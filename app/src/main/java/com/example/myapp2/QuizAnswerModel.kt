@@ -2,8 +2,6 @@ package com.example.myapp2
 
 import android.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-
 
 
 class QuizAnswerModel: ViewModel() {
@@ -17,14 +15,23 @@ class QuizAnswerModel: ViewModel() {
         AnswerNumber(R.id.answerNumber6, Color.WHITE)
     )
 
-    var currentIndexAnswer = 0
+    private var currentIndexAnswer = 0
 
-    val answerQuestionTextView: Int get() = textAnswerNumber[currentIndexAnswer].textNumber
+    val answerQuestionColor1: Int get() = textAnswerNumber[0].colorId
+    val answerQuestionColor2: Int get() = textAnswerNumber[1].colorId
+    val answerQuestionColor3: Int get() = textAnswerNumber[2].colorId
+    val answerQuestionColor4: Int get() = textAnswerNumber[3].colorId
+    val answerQuestionColor5: Int get() = textAnswerNumber[4].colorId
+    val answerQuestionColor6: Int get() = textAnswerNumber[5].colorId
 
     val answerQuestionColor: Int get() = textAnswerNumber[currentIndexAnswer].colorId
 
     fun moveToNextAnswer() {
-        currentIndexAnswer = (currentIndexAnswer + 1) % textAnswerNumber.size
+        if(currentIndexAnswer == 5){
+            currentIndexAnswer + 0
+        } else {
+            currentIndexAnswer = (currentIndexAnswer + 1)
+        }
     }
 
     fun moveToPrevAnswer() {
