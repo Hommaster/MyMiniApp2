@@ -12,7 +12,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityMainBinding
-import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 
@@ -35,17 +34,17 @@ class MainActivity : AppCompatActivity() {
 
     private var answerNumber = arrayListOf<TextView>()
 
-    private var incorrectAnswerInt:Double = 0.0
-
-
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this)[QuizViewModel::class.java]
+    }
+
+    private val quiCountModel: QuiCountModel by lazy {
+        ViewModelProvider(this)[QuiCountModel::class.java]
     }
 
     private val quizAnswerModel: QuizAnswerModel by lazy {
         ViewModelProvider(this)[QuizAnswerModel::class.java]
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                quizAnswerModel.addAnswerFromUser()
+                quiCountModel.addAnswerFromUser()
                 checkAnswer(true)
 
             }
@@ -83,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         falseButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                quizAnswerModel.addAnswerFromUser()
+                quiCountModel.addAnswerFromUser()
                 checkAnswer(false)
             }
         }
@@ -99,6 +98,8 @@ class MainActivity : AppCompatActivity() {
         textQuestionView.setOnClickListener {
             updateAddQuestionAndIndex()
         }
+
+        checkAnswerColor(quizViewModel.currentIndex)
 
         updateQuestion()
     }
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAddQuestionAndIndex() {
-        if(quizAnswerModel.answerCounting != 6.0) {
+        if(quiCountModel.answerCounting != 6.0) {
             quizViewModel.moveToNext()
             updateQuestion()
         }
@@ -134,6 +135,12 @@ class MainActivity : AppCompatActivity() {
         quizViewModel.moveToPrev()
         updateQuestion()
     }
+
+//    private fun checkAnswerColor(textId: Int) {
+//        if(quizAnswerModel.checkColorTextView(textId) == 1) {
+//
+//        }
+//    }
 
     private fun updateQuestion() {
         val textQuestionResId = quizViewModel.currentQuestionText
@@ -156,18 +163,18 @@ class MainActivity : AppCompatActivity() {
         val messageResId: Int
         if(answer) {
             messageResId = R.string.correct_toast
-            quizAnswerModel.addCorrectAnswer()
-            answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.GREEN)
+            quiCountModel.addCorrectAnswer()
+            quizAnswerModel.changeColorTextView(quizViewModel.currentIndex, true)
         } else {
             messageResId = R.string.incorrect_toast
-            answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.RED)
+            quizAnswerModel.changeColorTextView(quizViewModel.currentIndex, false)
         }
         Toast.makeText(
             this,
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
-        if(quizAnswerModel.answerCounting == 6.0) {
+        if(quiCountModel.answerCounting == 6.0) {
             endQuiz()
         }
     }
@@ -175,7 +182,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun endQuiz() {
         textResult.visibility = View.VISIBLE
-        textResult.text = "Result ${quizAnswerModel.calculatePercentCorrectAnswer()}%"
+        textResult.text = "Result ${quiCountModel.calculatePercentCorrectAnswer()}%"
     }
 
 
