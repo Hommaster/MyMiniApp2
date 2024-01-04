@@ -65,13 +65,6 @@ class MainActivity : AppCompatActivity() {
         answerNumber6 = bindingClass.answerNumber6
         textResult.visibility = View.GONE
 
-        answerNumber.add(answerNumber1)
-        answerNumber.add(answerNumber2)
-        answerNumber.add(answerNumber3)
-        answerNumber.add(answerNumber4)
-        answerNumber.add(answerNumber5)
-        answerNumber.add(answerNumber6)
-
         trueButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
                 quiCountModel.addAnswerFromUser()
@@ -99,9 +92,8 @@ class MainActivity : AppCompatActivity() {
             updateAddQuestionAndIndex()
         }
 
-        checkAnswerColor(quizViewModel.currentIndex)
-
         updateQuestion()
+        updateAnswer()
     }
 
     override fun onResume() {
@@ -127,24 +119,31 @@ class MainActivity : AppCompatActivity() {
     private fun updateAddQuestionAndIndex() {
         if(quiCountModel.answerCounting != 6.0) {
             quizViewModel.moveToNext()
+            quizAnswerModel.moveToNextAnswer()
+
             updateQuestion()
         }
     }
 
     private fun updateSubQuestionAndIndex() {
         quizViewModel.moveToPrev()
+        quizAnswerModel.moveToPrevAnswer()
         updateQuestion()
     }
-
-//    private fun checkAnswerColor(textId: Int) {
-//        if(quizAnswerModel.checkColorTextView(textId) == 1) {
-//
-//        }
-//    }
 
     private fun updateQuestion() {
         val textQuestionResId = quizViewModel.currentQuestionText
         textQuestionView.setText(textQuestionResId)
+    }
+
+    private fun updateAnswer() {
+        val textViewAnswerColorResId = quizAnswerModel.answerQuestionColor
+        answerNumber1.setBackgroundColor(textViewAnswerColorResId)
+        answerNumber2.setBackgroundColor(textViewAnswerColorResId)
+        answerNumber3.setBackgroundColor(textViewAnswerColorResId)
+        answerNumber4.setBackgroundColor(textViewAnswerColorResId)
+        answerNumber5.setBackgroundColor(textViewAnswerColorResId)
+        answerNumber6.setBackgroundColor(textViewAnswerColorResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
@@ -161,13 +160,16 @@ class MainActivity : AppCompatActivity() {
     private fun recordAnswer(answer: Boolean) {
         quizViewModel.changeAnswerFromUser()
         val messageResId: Int
+        val textViewAnswerColorResId = quizAnswerModel.answerQuestionColor
         if(answer) {
             messageResId = R.string.correct_toast
             quiCountModel.addCorrectAnswer()
-            quizAnswerModel.changeColorTextView(quizViewModel.currentIndex, true)
+            quizAnswerModel.changeColorToGreen()
+            checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         } else {
             messageResId = R.string.incorrect_toast
-            quizAnswerModel.changeColorTextView(quizViewModel.currentIndex, false)
+            quizAnswerModel.changeColorToRed()
+            checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         }
         Toast.makeText(
             this,
@@ -177,6 +179,18 @@ class MainActivity : AppCompatActivity() {
         if(quiCountModel.answerCounting == 6.0) {
             endQuiz()
         }
+    }
+
+    private fun checkAnswerNumber(): TextView {
+        when(quizViewModel.currentIndex){
+            0 -> return answerNumber1
+            1 -> return answerNumber2
+            2 -> return answerNumber3
+            3 -> return answerNumber4
+            4 -> return answerNumber5
+            5 -> return answerNumber6
+        }
+        return answerNumber6
     }
 
     @SuppressLint("SetTextI18n")

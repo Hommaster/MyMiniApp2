@@ -1,36 +1,47 @@
 package com.example.myapp2
 
+import android.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+
+
 
 class QuizAnswerModel: ViewModel() {
 
     private val textAnswerNumber = listOf(
-        AnswerNumber(R.id.answerNumber1, 2),
-        AnswerNumber(R.id.answerNumber2, 2),
-        AnswerNumber(R.id.answerNumber3, 2),
-        AnswerNumber(R.id.answerNumber4, 2),
-        AnswerNumber(R.id.answerNumber5, 2),
-        AnswerNumber(R.id.answerNumber6,2)
+        AnswerNumber(R.id.answerNumber1, Color.WHITE),
+        AnswerNumber(R.id.answerNumber2, Color.WHITE),
+        AnswerNumber(R.id.answerNumber3, Color.WHITE),
+        AnswerNumber(R.id.answerNumber4, Color.WHITE),
+        AnswerNumber(R.id.answerNumber5, Color.WHITE),
+        AnswerNumber(R.id.answerNumber6, Color.WHITE)
     )
 
-    fun changeColorTextView(textId: Int, color: Boolean) {
-        textAnswerNumber[textId].color = if(color) {
-            1
-        } else {
+    var currentIndexAnswer = 0
+
+    val answerQuestionTextView: Int get() = textAnswerNumber[currentIndexAnswer].textNumber
+
+    val answerQuestionColor: Int get() = textAnswerNumber[currentIndexAnswer].colorId
+
+    fun moveToNextAnswer() {
+        currentIndexAnswer = (currentIndexAnswer + 1) % textAnswerNumber.size
+    }
+
+    fun moveToPrevAnswer() {
+        currentIndexAnswer = if(currentIndexAnswer > 0){
+            (currentIndexAnswer - 1)
+        } else{
             0
         }
     }
 
-    fun checkColorTextView(textId: Int): Int {
-        val color = textAnswerNumber[textId].color
-        if(color == 1) {
-            return 1
-        }
-        if(color == 0) {
-            return 0
-        } else {
-            return 2
-        }
+    fun changeColorToGreen() {
+        textAnswerNumber[currentIndexAnswer].colorId = Color.GREEN
     }
+
+    fun changeColorToRed() {
+        textAnswerNumber[currentIndexAnswer].colorId = Color.RED
+    }
+
 
 }
