@@ -35,13 +35,15 @@ class MainActivity : AppCompatActivity() {
 
     private var answerNumber = arrayListOf<TextView>()
 
-    private var answerCounting:Double = 0.0
-    private var correctAnswerInt:Double = 0.0
     private var incorrectAnswerInt:Double = 0.0
 
 
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this)[QuizViewModel::class.java]
+    }
+
+    private val quizAnswerModel: QuizAnswerModel by lazy {
+        ViewModelProvider(this)[QuizAnswerModel::class.java]
     }
 
 
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                answerCounting += 1
+                quizAnswerModel.addAnswerFromUser()
                 checkAnswer(true)
 
             }
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         falseButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                answerCounting += 1
+                quizAnswerModel.addAnswerFromUser()
                 checkAnswer(false)
             }
         }
@@ -122,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAddQuestionAndIndex() {
-        if(answerCounting != 6.0) {
+        if(quizAnswerModel.answerCounting != 6.0) {
             quizViewModel.moveToNext()
             updateQuestion()
         }
@@ -154,11 +156,10 @@ class MainActivity : AppCompatActivity() {
         val messageResId: Int
         if(answer) {
             messageResId = R.string.correct_toast
-            correctAnswerInt += 1
+            quizAnswerModel.addCorrectAnswer()
             answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.GREEN)
         } else {
             messageResId = R.string.incorrect_toast
-            incorrectAnswerInt += 1
             answerNumber[quizViewModel.currentIndex].setBackgroundColor(Color.RED)
         }
         Toast.makeText(
@@ -166,16 +167,15 @@ class MainActivity : AppCompatActivity() {
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
-        if(answerCounting == 6.0) {
+        if(quizAnswerModel.answerCounting == 6.0) {
             endQuiz()
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun endQuiz() {
-        val countAnswer = (((100/answerCounting) * correctAnswerInt) * 100).roundToInt() / 100.0
         textResult.visibility = View.VISIBLE
-        textResult.text = "Result $countAnswer%"
+        textResult.text = "Result ${quizAnswerModel.calculatePercentCorrectAnswer()}%"
     }
 
 
