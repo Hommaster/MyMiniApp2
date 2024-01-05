@@ -3,6 +3,7 @@ package com.example.myapp2
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
+private const val KEY_INDEX = "index"
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "fun onCreate() is called")
         bindingClass = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
+
+        val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
+        quizViewModel.currentIndex = currentIndex
+
         trueButton = bindingClass.trueButton
         falseButton = bindingClass.falseButton
         nextButton = bindingClass.nextButton
@@ -106,6 +112,15 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "fun onStop() is called")
     }
 
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
+    }
+
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "fun onStop() is called")
@@ -115,6 +130,8 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d(TAG, "fun onDestroy() is called")
     }
+
+
 
     private fun updateAddQuestionAndIndex() {
         if(quiCountModel.answerCounting < 6) {
