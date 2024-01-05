@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         prevButton = bindingClass.prevButton
         textQuestionView = bindingClass.questionTextView
         textResult = bindingClass.textResult
-
         answerNumber1 = bindingClass.answerNumber1
         answerNumber2 = bindingClass.answerNumber2
         answerNumber3 = bindingClass.answerNumber3
@@ -93,6 +92,8 @@ class MainActivity : AppCompatActivity() {
 
         updateQuestion()
         updateAnswer()
+
+        endQuiz()
     }
 
     override fun onResume() {
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity() {
 
             updateQuestion()
             updateAnswer()
+            endQuiz()
         }
     }
 
@@ -160,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         updateAnswer()
-
+        endQuiz()
     }
 
     private fun recordAnswer(answer: Boolean) {
@@ -184,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         ).show()
         if(quiCountModel.answerCounting == 6.0) {
             endQuiz()
+
         }
     }
 
@@ -199,10 +202,15 @@ class MainActivity : AppCompatActivity() {
         return answerNumber6
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun endQuiz() {
-        textResult.visibility = View.VISIBLE
-        textResult.text = "Result ${quiCountModel.calculatePercentCorrectAnswer()}%"
+        if(quiCountModel.answerCounting == 6.0) {
+            val textResultResId = quizAnswerModel.resultQuestionId
+            textResult.setText(textResultResId)
+            textResult.text = "${textResult.text} ${quiCountModel.calculatePercentCorrectAnswer()}%"
+            textResult.visibility = View.VISIBLE
+        }
     }
 
 

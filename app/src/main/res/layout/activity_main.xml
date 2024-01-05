@@ -72,8 +72,8 @@
 
         <TextView
             android:id="@+id/answerNumber2"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="49dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:ellipsize="middle"
             android:text="@string/number_2"
