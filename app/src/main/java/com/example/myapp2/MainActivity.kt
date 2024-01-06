@@ -1,20 +1,19 @@
 package com.example.myapp2
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityMainBinding
-
-private const val TAG = "MainActivity"
-private const val KEY_INDEX = "index"
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,13 +45,19 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[QuizAnswerModel::class.java]
     }
 
+    private var resultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if(result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "fun onCreate() is called")
+        Log.d(Constance.TAG, "fun onCreate() is called")
         bindingClass = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
 
-        val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
+        val currentIndex = savedInstanceState?.getInt(Constance.KEY_INDEX, 0) ?: 0
         quizViewModel.currentIndex = currentIndex
 
         trueButton = bindingClass.trueButton
@@ -99,7 +104,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         cheatButton.setOnClickListener {
-
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            resultLaunch.launch(intent)
         }
 
         updateQuestion()
@@ -109,32 +116,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "fun onResume() is called")
+        Log.d(Constance.TAG, "fun onResume() is called")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "fun onStop() is called")
+        Log.d(Constance.TAG, "fun onStop() is called")
     }
 
     override fun onPause() {
         super.onPause()
+        Log.d(Constance.TAG, "fun onStop() is stopped")
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
-        Log.i(TAG, "onSaveInstanceState")
-        savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
+        Log.i(Constance.TAG, "onSaveInstanceState")
+        savedInstanceState.putInt(Constance.KEY_INDEX, quizViewModel.currentIndex)
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "fun onStop() is called")
+        Log.d(Constance.TAG, "fun onStop() is called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "fun onDestroy() is called")
+        Log.d(Constance.TAG, "fun onDestroy() is called")
     }
 
 
