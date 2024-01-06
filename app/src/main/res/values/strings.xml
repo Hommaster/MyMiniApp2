@@ -18,4 +18,8 @@
     <string name="number_5">5</string>
     <string name="number_6">6</string>
     <string name="text_end_quiz">You answered correctly in</string>
+    <string name="warning_text">Are you sure you want to do this?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="judgment_toast">Cheating is wrong.</string>
 </resources>

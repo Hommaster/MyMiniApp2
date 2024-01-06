@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var falseButton: Button
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
+    private lateinit var cheatButton: Button
     private lateinit var textQuestionView: TextView
     private lateinit var textResult: TextView
     private lateinit var answerNumber1: TextView
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         falseButton = bindingClass.falseButton
         nextButton = bindingClass.nextButton
         prevButton = bindingClass.prevButton
+        cheatButton = bindingClass.cheatButton
         textQuestionView = bindingClass.questionTextView
         textResult = bindingClass.textResult
         answerNumber1 = bindingClass.answerNumber1
@@ -96,9 +98,12 @@ class MainActivity : AppCompatActivity() {
             updateAddQuestionAndIndex()
         }
 
+        cheatButton.setOnClickListener {
+
+        }
+
         updateQuestion()
         updateAnswer()
-
         endQuiz()
     }
 
