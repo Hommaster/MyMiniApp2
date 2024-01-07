@@ -1,11 +1,13 @@
 package com.example.myapp2
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityCheatBinding
 
 class CheatActivity : AppCompatActivity() {
@@ -16,6 +18,15 @@ class CheatActivity : AppCompatActivity() {
     private lateinit var showAnswerButton: Button
 
     private lateinit var bindingClass: ActivityCheatBinding
+
+    private val quizViewModel: QuizViewModel by lazy {
+        ViewModelProvider(this)[QuizViewModel::class.java]
+    }
+
+    private val cheatViewModel: CheatViewModel by lazy {
+        ViewModelProvider(this)[CheatViewModel::class.java]
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +43,8 @@ class CheatActivity : AppCompatActivity() {
                 else -> R.string.false_button
             }
             answerTextView.setText(answerTextRes)
+            setAnswerShownResult(true)
         }
-
     }
 
     companion object {
@@ -42,6 +53,12 @@ class CheatActivity : AppCompatActivity() {
                 putExtra(Constance.EXTRA_ANSWER_IS_TRUE, answerIsTrue)
             }
         }
+    }
+
+    private fun setAnswerShownResult(answerIsTrue: Boolean) {
+        val data = Intent()
+        quizViewModel.changeCheaterAnswer()
+        setResult(Activity.RESULT_OK, data)
     }
 
 }

@@ -16,12 +16,18 @@ class QuizViewModel: ViewModel() {
 
     var currentIndex = 0
 
+    val isCheater: Boolean get() = questionBank[currentIndex].isCheatAnswer
+
     val currentQuestionAnswer: Boolean get() = questionBank[currentIndex].answer
 
     val currentQuestionText: Int get() = questionBank[currentIndex].textId
 
     fun changeAnswerFromUser() {
         questionBank[currentIndex].userAnswer = true
+    }
+
+    fun changeCheaterAnswer() {
+        questionBank[currentIndex].isCheatAnswer = true
     }
 
     fun checkAnswerFromUser(): Boolean {

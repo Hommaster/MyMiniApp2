@@ -1,6 +1,7 @@
 package com.example.myapp2
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,9 +46,10 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[QuizAnswerModel::class.java]
     }
 
-    private var resultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if(result.resultCode == RESULT_OK) {
-            val data: Intent? = result.data
+    private val resultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result: ActivityResult ->
+        if(result.resultCode == Activity.RESULT_OK) {
+            quizViewModel.changeCheaterAnswer()
         }
     }
 
@@ -201,12 +203,20 @@ class MainActivity : AppCompatActivity() {
         val messageResId: Int
         val textViewAnswerColorResId = quizAnswerModel.answerQuestionColor
         if(answer) {
-            messageResId = R.string.correct_toast
+            messageResId = if(quizViewModel.isCheater) {
+                R.string.judgment_toast
+            } else {
+                R.string.correct_toast
+            }
             quiCountModel.addCorrectAnswer()
             quizAnswerModel.changeColorToGreen()
             checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         } else {
-            messageResId = R.string.incorrect_toast
+            messageResId = if(quizViewModel.isCheater) {
+                R.string.judgment_toast
+            } else {
+                R.string.incorrect_toast
+            }
             quizAnswerModel.changeColorToRed()
             checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         }
