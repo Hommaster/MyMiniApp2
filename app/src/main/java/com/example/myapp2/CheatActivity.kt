@@ -19,10 +19,6 @@ class CheatActivity : AppCompatActivity() {
 
     private lateinit var bindingClass: ActivityCheatBinding
 
-    private val quizViewModel: QuizViewModel by lazy {
-        ViewModelProvider(this)[QuizViewModel::class.java]
-    }
-
     private val cheatViewModel: CheatViewModel by lazy {
         ViewModelProvider(this)[CheatViewModel::class.java]
     }
@@ -43,8 +39,6 @@ class CheatActivity : AppCompatActivity() {
             setAnswerShownResult(true)
         }
 
-        checkIndexAnswer()
-
         callSetAnswerShownResult()
     }
 
@@ -59,10 +53,6 @@ class CheatActivity : AppCompatActivity() {
     private fun setAnswerShownResult(answerIsTrue: Boolean) {
         val data = Intent()
         setResult(Activity.RESULT_OK, data)
-    }
-
-    private fun checkIndexAnswer() {
-        cheatViewModel.currentIndexCheater = quizViewModel.currentIndex
     }
 
     private fun textRes() {

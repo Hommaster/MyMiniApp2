@@ -2,7 +2,6 @@ package com.example.myapp2
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -200,23 +199,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun recordAnswer(answer: Boolean) {
         quizViewModel.changeAnswerFromUser()
-        val messageResId: Int
         val textViewAnswerColorResId = quizAnswerModel.answerQuestionColor
+
+        val messageResId: Int = when {
+            quizViewModel.isCheater -> R.string.judgment_toast
+            answer -> R.string.correct_toast
+            else -> R.string.incorrect_toast
+        }
+
         if(answer) {
-            messageResId = if(quizViewModel.isCheater) {
-                R.string.judgment_toast
-            } else {
-                R.string.correct_toast
-            }
             quiCountModel.addCorrectAnswer()
             quizAnswerModel.changeColorToGreen()
             checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         } else {
-            messageResId = if(quizViewModel.isCheater) {
-                R.string.judgment_toast
-            } else {
-                R.string.incorrect_toast
-            }
             quizAnswerModel.changeColorToRed()
             checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         }

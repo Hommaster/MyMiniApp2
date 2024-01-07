@@ -5,20 +5,12 @@ import androidx.lifecycle.ViewModel
 class CheatViewModel: ViewModel() {
 
     private val bankCheater = listOf(
-        CheatAnswer(0, false),
-        CheatAnswer(1, false),
-        CheatAnswer(2, false),
-        CheatAnswer(3, false),
-        CheatAnswer(4, false),
-        CheatAnswer(5, false),
+        CheatAnswer(0, false)
     )
-
-    var currentIndexCheater = 0
-
-    val getCheaterAnswer: Boolean get() = bankCheater[currentIndexCheater].cheatAnswerFromCheatActivity
+    val getCheaterAnswer: Boolean get() = bankCheater[0].cheatAnswerFromCheatActivity
 
     fun changeCheater() {
-        bankCheater[currentIndexCheater].cheatAnswerFromCheatActivity = true
+        bankCheater[0].cheatAnswerFromCheatActivity = true
     }
 
 }
