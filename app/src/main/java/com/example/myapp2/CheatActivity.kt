@@ -16,6 +16,7 @@ class CheatActivity : AppCompatActivity() {
 
     private lateinit var answerTextView: TextView
     private lateinit var showAnswerButton: Button
+    private lateinit var backMainButton: Button
 
     private lateinit var bindingClass: ActivityCheatBinding
 
@@ -32,11 +33,22 @@ class CheatActivity : AppCompatActivity() {
 
         answerTextView = bindingClass.answerTextView
         showAnswerButton = bindingClass.showAnswerButton
+        backMainButton = bindingClass.backToMain!!
 
         showAnswerButton.setOnClickListener {
             cheatViewModel.changeCheater()
             textRes()
-            setAnswerShownResult(true)
+            setAnswerShownResult()
+        }
+
+        backMainButton.setOnClickListener {
+            if(cheatViewModel.getCheaterAnswer) {
+                setAnswerShownResult()
+            } else {
+                val data = Intent()
+                setResult(Activity.RESULT_CANCELED, data)
+            }
+            finish()
         }
 
         callSetAnswerShownResult()
@@ -50,7 +62,7 @@ class CheatActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAnswerShownResult(answerIsTrue: Boolean) {
+    private fun setAnswerShownResult() {
         val data = Intent()
         setResult(Activity.RESULT_OK, data)
     }
@@ -65,7 +77,7 @@ class CheatActivity : AppCompatActivity() {
 
     private fun callSetAnswerShownResult() {
         if(cheatViewModel.getCheaterAnswer) {
-            setAnswerShownResult(true)
+            setAnswerShownResult()
             textRes()
         }
     }
