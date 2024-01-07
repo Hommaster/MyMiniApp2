@@ -38,13 +38,14 @@ class CheatActivity : AppCompatActivity() {
         showAnswerButton = bindingClass.showAnswerButton
 
         showAnswerButton.setOnClickListener {
-            val answerTextRes = when {
-                answerIsTrue -> R.string.true_button
-                else -> R.string.false_button
-            }
-            answerTextView.setText(answerTextRes)
+            cheatViewModel.changeCheater()
+            textRes()
             setAnswerShownResult(true)
         }
+
+        checkIndexAnswer()
+
+        callSetAnswerShownResult()
     }
 
     companion object {
@@ -57,8 +58,25 @@ class CheatActivity : AppCompatActivity() {
 
     private fun setAnswerShownResult(answerIsTrue: Boolean) {
         val data = Intent()
-        quizViewModel.changeCheaterAnswer()
         setResult(Activity.RESULT_OK, data)
     }
 
+    private fun checkIndexAnswer() {
+        cheatViewModel.currentIndexCheater = quizViewModel.currentIndex
+    }
+
+    private fun textRes() {
+        val answerTextRes = when {
+            answerIsTrue -> R.string.true_button
+            else -> R.string.false_button
+        }
+        answerTextView.setText(answerTextRes)
+    }
+
+    private fun callSetAnswerShownResult() {
+        if(cheatViewModel.getCheaterAnswer) {
+            setAnswerShownResult(true)
+            textRes()
+        }
+    }
 }

@@ -15,6 +15,8 @@ class CheatViewModel: ViewModel() {
 
     var currentIndexCheater = 0
 
+    val getCheaterAnswer: Boolean get() = bankCheater[currentIndexCheater].cheatAnswerFromCheatActivity
+
     fun changeCheater() {
         bankCheater[currentIndexCheater].cheatAnswerFromCheatActivity = true
     }
