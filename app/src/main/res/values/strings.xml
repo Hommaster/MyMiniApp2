@@ -23,4 +23,7 @@
     <string name="cheat_button">Cheat!</string>
     <string name="judgment_toast">Cheating is wrong.</string>
     <string name="back_to_main_Activity_from_cheat_activity">Back to Main</string>
+    <string name="answer_from_cheat">Answer</string>
+    <string name="current_hints">You have hints:</string>
+    <string name="hints">3</string>
 </resources>

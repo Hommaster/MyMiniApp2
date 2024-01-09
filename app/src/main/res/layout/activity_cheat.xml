@@ -20,7 +20,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:text="Answer" />
+        android:text="@string/answer_from_cheat" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/current_hints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:text="@string/current_hints" />
+
+        <TextView
+            android:id="@+id/hints_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:text="@string/hints"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/show_answer_button"
@@ -33,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back_to_main_Activity_from_cheat_activity" />
-
 
 
 </LinearLayout>
