@@ -35,11 +35,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var answerNumber5: TextView
     private lateinit var answerNumber6: TextView
 
+    private lateinit var currentHintsText: TextView
+    private lateinit var hintsNumber: TextView
+
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
-    private val quiCountModel: QuiCountModel by lazy {
+    private val quizCountModel: QuiCountModel by lazy {
         ViewModelProvider(this)[QuiCountModel::class.java]
     }
 
@@ -51,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         result: ActivityResult ->
         if(result.resultCode == Activity.RESULT_OK) {
             quizViewModel.changeCheaterAnswer()
+            quizCountModel.changeHints()
+            updateHintsText()
         }
     }
 
@@ -77,11 +82,14 @@ class MainActivity : AppCompatActivity() {
         answerNumber5 = bindingClass.answerNumber5
         answerNumber6 = bindingClass.answerNumber6
 
+        currentHintsText = bindingClass.currentHints
+        hintsNumber = bindingClass.hintsTextView
+
         textResult.visibility = View.GONE
 
         trueButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                quiCountModel.addAnswerFromUser()
+                quizCountModel.addAnswerFromUser()
                 checkAnswer(true)
 
             }
@@ -89,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         falseButton.setOnClickListener {
             if(!quizViewModel.checkAnswerFromUser()){
-                quiCountModel.addAnswerFromUser()
+                quizCountModel.addAnswerFromUser()
                 checkAnswer(false)
             }
         }
@@ -107,11 +115,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         cheatButton.setOnClickListener {view ->
-            val answerIsTrue = quizViewModel.currentQuestionAnswer
-            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            val options = ActivityOptionsCompat.makeClipRevealAnimation(view, 0, 0, view.width, view.height)
-            options.toBundle()
-            resultLaunch.launch(intent, options)
+            if(quizCountModel.currentHints > 0) {
+                val answerIsTrue = quizViewModel.currentQuestionAnswer
+                val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+                val options = ActivityOptionsCompat.makeClipRevealAnimation(view, 0, 0, view.width, view.height)
+                options.toBundle()
+                resultLaunch.launch(intent, options)
+            }
+
         }
 
         updateQuestion()
@@ -153,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun updateAddQuestionAndIndex() {
-        if(quiCountModel.answerCounting < 6) {
+        if(quizCountModel.answerCounting < 6) {
             quizViewModel.moveToNext()
             quizAnswerModel.moveToNextAnswer()
 
@@ -197,6 +208,8 @@ class MainActivity : AppCompatActivity() {
             recordAnswer(false)
 
         }
+
+        updateHintsText()
         updateAnswer()
         endQuiz()
     }
@@ -212,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(answer) {
-            quiCountModel.addCorrectAnswer()
+            quizCountModel.addCorrectAnswer()
             quizAnswerModel.changeColorToGreen()
             checkAnswerNumber().setBackgroundColor(textViewAnswerColorResId)
         } else {
@@ -224,7 +237,7 @@ class MainActivity : AppCompatActivity() {
             messageResId,
             Toast.LENGTH_SHORT
         ).show()
-        if(quiCountModel.answerCounting == 6.0) {
+        if(quizCountModel.answerCounting == 6.0) {
             endQuiz()
 
         }
@@ -245,12 +258,16 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun endQuiz() {
-        if(quiCountModel.answerCounting == 6.0) {
+        if(quizCountModel.answerCounting == 6.0) {
             val textResultResId = quizAnswerModel.resultQuestionId
             textResult.setText(textResultResId)
-            textResult.text = "${textResult.text} ${quiCountModel.calculatePercentCorrectAnswer()}%"
+            textResult.text = "${textResult.text} ${quizCountModel.calculatePercentCorrectAnswer()}%"
             textResult.visibility = View.VISIBLE
         }
+    }
+
+    private fun updateHintsText() {
+        hintsNumber.text = quizCountModel.currentHints.toString()
     }
 
 

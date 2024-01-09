@@ -19,8 +19,6 @@ class CheatActivity : AppCompatActivity() {
     private lateinit var backMainButton: Button
 
     private lateinit var bindingClass: ActivityCheatBinding
-    private lateinit var currentHintsText: TextView
-    private lateinit var hintsNumber: TextView
 
     private val cheatViewModel: CheatViewModel by lazy {
         ViewModelProvider(this)[CheatViewModel::class.java]
@@ -32,21 +30,14 @@ class CheatActivity : AppCompatActivity() {
         bindingClass = ActivityCheatBinding.inflate(layoutInflater)
         setContentView(bindingClass.root)
         answerIsTrue = intent.getBooleanExtra(Constance.EXTRA_ANSWER_IS_TRUE, false)
-
-        answerTextView = bindingClass.answerTextView
         showAnswerButton = bindingClass.showAnswerButton
         backMainButton = bindingClass.backToMain
-        currentHintsText = bindingClass.currentHints
-        hintsNumber = bindingClass.hintsTextView
+        answerTextView = bindingClass.answerTextView
 
         showAnswerButton.setOnClickListener {
-            if(cheatViewModel.getHints > 0) {
                 cheatViewModel.changeCheater()
-                cheatViewModel.changeHints()
                 textRes()
                 setAnswerShownResult()
-            }
-
         }
 
         backMainButton.setOnClickListener {
@@ -80,7 +71,6 @@ class CheatActivity : AppCompatActivity() {
             else -> R.string.false_button
         }
         answerTextView.setText(answerTextRes)
-        hintsNumber.text = cheatViewModel.getHints.toString()
     }
 
     private fun callSetAnswerShownResult() {

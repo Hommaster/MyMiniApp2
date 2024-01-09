@@ -22,4 +22,10 @@ class QuiCountModel: ViewModel() {
         return (((100/answerCounting) * correctAnswer) * 100).roundToInt() / 100.0
     }
 
+    var currentHints = 3
+
+    fun changeHints() {
+        currentHints -= 1
+    }
+
 }
