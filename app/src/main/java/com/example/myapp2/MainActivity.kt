@@ -2,6 +2,7 @@ package com.example.myapp2
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapp2.databinding.ActivityMainBinding
 
@@ -104,10 +106,12 @@ class MainActivity : AppCompatActivity() {
             updateAddQuestionAndIndex()
         }
 
-        cheatButton.setOnClickListener {
+        cheatButton.setOnClickListener {view ->
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            resultLaunch.launch(intent)
+            val options = ActivityOptionsCompat.makeClipRevealAnimation(view, 0, 0, view.width, view.height)
+            options.toBundle()
+            resultLaunch.launch(intent, options)
         }
 
         updateQuestion()
