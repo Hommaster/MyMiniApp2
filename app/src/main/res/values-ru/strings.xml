@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ГеоКвиз</string>
+    <string name="question_australia">Канберра является столицей Австралии</string>
+    <string name="true_button">Истина</string>
+    <string name="false_button">Ложь</string>
+    <string name="correct_toast">Правильно!</string>
+    <string name="incorrect_toast">Не правильно..</string>
+    <string name="button_next">Следующий</string>
+    <string name="question_ocean">Тихий океан больше, чем Атланоический океан</string>
+    <string name="question_mideast">Суэцкий канал соединяет Красное море и Индийский океан</string>
+    <string name="question_africa">Источник реки Нил находится в Египте</string>
+    <string name="question_americas">Река Амазон является самой длинной рекой в Америке</string>
+    <string name="question_asia">Озеро Байкал – старейшее и самое глубокое пресноводное озеро в мире.</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="text_end_quiz">Вы были правы в</string>
+    <string name="warning_text">Вы уверены что хотите этого?</string>
+    <string name="show_answer_button">Показать ответ!</string>
+    <string name="cheat_button">Подсказка!</string>
+    <string name="judgment_toast">Можно было и без подсказок..</string>
+    <string name="back_to_main_Activity_from_cheat_activity">Вернуться на главный экран</string>
+    <string name="answer_from_cheat">Ответ</string>
+    <string name="current_hints">Подсказок осталось:</string>
+    <string name="hints">3</string>
+</resources>
