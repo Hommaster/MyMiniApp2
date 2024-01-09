@@ -27,4 +27,5 @@
     <string name="answer_from_cheat">Ответ</string>
     <string name="current_hints">Подсказок осталось:</string>
     <string name="hints">3</string>
+    <string name="recreate_button">ЗАНОВО!</string>
 </resources>

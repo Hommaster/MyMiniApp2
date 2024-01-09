@@ -26,4 +26,5 @@
     <string name="answer_from_cheat">Answer</string>
     <string name="current_hints">You have hints:</string>
     <string name="hints">3</string>
+    <string name="recreate_button">Recreate HERE!</string>
 </resources>

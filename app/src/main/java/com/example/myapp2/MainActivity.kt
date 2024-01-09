@@ -2,7 +2,6 @@ package com.example.myapp2
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ActivityOptions
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -37,7 +36,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var currentHintsText: TextView
     private lateinit var hintsNumber: TextView
-
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProvider(this)[QuizViewModel::class.java]
     }
@@ -84,7 +82,6 @@ class MainActivity : AppCompatActivity() {
 
         currentHintsText = bindingClass.currentHints
         hintsNumber = bindingClass.hintsTextView
-
         textResult.visibility = View.GONE
 
         trueButton.setOnClickListener {
