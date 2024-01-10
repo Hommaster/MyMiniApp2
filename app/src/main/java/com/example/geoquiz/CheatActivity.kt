@@ -1,4 +1,4 @@
-package com.example.myapp2
+package com.example.geoquiz
 
 import android.app.Activity
 import android.content.Context
@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapp2.databinding.ActivityCheatBinding
+import com.example.geoquiz.databinding.ActivityCheatBinding
 
 class CheatActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.myapp2
+package com.example.geoquiz
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -14,7 +14,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapp2.databinding.ActivityMainBinding
+import com.example.geoquiz.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

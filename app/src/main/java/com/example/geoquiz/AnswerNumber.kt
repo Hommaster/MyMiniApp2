@@ -1,6 +1,4 @@
-package com.example.myapp2
-
-import android.widget.TextView
+package com.example.geoquiz
 
 data class AnswerNumber(val textNumber: Int, var colorId: Int) {
 

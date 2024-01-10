@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapp2"
+    namespace = "com.example.geoquiz"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.myapp2"
+        applicationId = "com.example.geoquiz"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

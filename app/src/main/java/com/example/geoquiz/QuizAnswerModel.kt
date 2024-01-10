@@ -1,4 +1,4 @@
-package com.example.myapp2
+package com.example.geoquiz
 
 import android.graphics.Color
 import androidx.lifecycle.ViewModel
